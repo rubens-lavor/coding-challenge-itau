@@ -10,6 +10,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
 
 logging:
   level:

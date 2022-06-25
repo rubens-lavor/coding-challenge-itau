@@ -1,13 +1,22 @@
 package com.filmreview.domain;
 
+
+import com.filmreview.domain.entity.AbstractEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Objects;
 
-public class Reviewer {
+@Entity
+public class Reviewer extends AbstractEntity {
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "email")
     private String email;
 
     private String password;
@@ -15,6 +24,10 @@ public class Reviewer {
     private Integer points = 0;
 
     private ProfileType profileType = ProfileType.READER;
+
+//    @ManyToOne
+//    @JoinColumn(name = "mention_id")
+//    private AbstractCommentEntity mention;
 
     public static Reviewer of(String name, String username, String email, String password){
         var reviewer = new Reviewer();
