@@ -6,23 +6,27 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 public class Film  extends AbstractEntity {
 
-    private UUID externalId;
-
     private String title;
 
-    @OneToMany(mappedBy = "film")
-    private final List<Grade> grades = new ArrayList();
+    private String imdbID;
 
     @OneToMany(mappedBy = "film")
     private final List<Review> reviews = new ArrayList();
 
-    public UUID getExternalId() {
-        return externalId;
+    public static Film of(String title, String imdbID) {
+        var film = new Film();
+        film.title = title;
+        film.imdbID = imdbID;
+
+        return film;
+    }
+
+    public String getImdbID() {
+        return imdbID;
     }
 
     public String getTitle() {
@@ -32,11 +36,6 @@ public class Film  extends AbstractEntity {
     public List<Review> getReviews() {
         return reviews;
     }
-
-    public List<Grade> getGrades() {
-        return grades;
-    }
-
 
     public void addReview(Review review) {
         reviews.add(review);

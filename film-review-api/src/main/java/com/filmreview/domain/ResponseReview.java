@@ -13,4 +13,12 @@ public class ResponseReview extends AbstractCommentEntity {
     @JoinColumn(name = "review_id")
     private Review review;
 
+    @Override
+    public String toString() {
+        return "ResponseReview{" +
+                "comment='" + comment + '\'' +
+                ", like=" + like +
+                ", dislike=" + dislike +
+                '}';
+    }
 }

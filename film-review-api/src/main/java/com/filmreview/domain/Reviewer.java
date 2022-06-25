@@ -97,7 +97,7 @@ public class Reviewer extends AbstractEntity {
         verifyTypeProfile();
     }
 
-    private void verifyTypeProfile() {
+    private void verifyTypeProfile() { // TODO: criar teste
         if (score > 1000) return;
         profileType = profileType.level(score);
     }

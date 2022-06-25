@@ -33,6 +33,10 @@ public class ReviewDTO {
         return id;
     }
 
+    public Double getGrade() {
+        return grade;
+    }
+
     public ReviewerDTO getReviewer() {
         return reviewer;
     }

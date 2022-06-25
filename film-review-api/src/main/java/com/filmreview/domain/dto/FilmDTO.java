@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class FilmDTO {
     private UUID id;
-    private UUID externalId;
+    private String imdbID;
     private String title;
     private List<GradeDTO> grades;
     private List<ReviewDTO> reviews;
@@ -16,7 +16,7 @@ public class FilmDTO {
     public static FilmDTO of(Film film){
         var dto = new FilmDTO();
         dto.id = film.getId();
-        dto.externalId = film.getExternalId();
+        dto.imdbID = film.getImdbID();
         dto.title = film.getTitle();
         dto.grades = getGrades(film);
         dto.reviews = getReviews(film);
@@ -42,8 +42,8 @@ public class FilmDTO {
         return id;
     }
 
-    public UUID getExternalId() {
-        return externalId;
+    public String getImdbID() {
+        return imdbID;
     }
 
     public String getTitle() {

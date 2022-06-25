@@ -18,17 +18,18 @@ public class Review extends AbstractCommentEntity {
 
     private Boolean isRepeated = false;
 
+    @OneToMany(mappedBy = "review")
+    private final List<ResponseReview> responses = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "film_id")
     private Film film;
 
-    @OneToMany(mappedBy = "review")
-    private final List<ResponseReview> responses = new ArrayList<>();
-
-    public static Review of(Reviewer reviewer, String comment) {
+    public static Review of(Reviewer reviewer, String comment, Double grade) {
         var review = new Review();
         review.reviewer = reviewer;
         review.comment = comment;
+        review.grade = grade;
 
         return review;
     }
@@ -53,6 +54,10 @@ public class Review extends AbstractCommentEntity {
         return responses;
     }
 
+    public void repeatedReview(){
+        isRepeated = true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,9 +75,13 @@ public class Review extends AbstractCommentEntity {
     public String toString() {
         return "Review{" +
                 "reviewer=" + reviewer +
+                ", grade=" + grade +
                 ", isRepeated=" + isRepeated +
-                ", film=" + film +
                 ", responses=" + responses +
+                ", film=" + film +
+                ", comment='" + comment + '\'' +
+                ", like=" + like +
+                ", dislike=" + dislike +
                 '}';
     }
 }

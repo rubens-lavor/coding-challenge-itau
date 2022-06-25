@@ -36,4 +36,5 @@ public abstract class AbstractCommentEntity extends AbstractEntity {
     public Integer getDislike() {
         return dislike;
     }
+
 }

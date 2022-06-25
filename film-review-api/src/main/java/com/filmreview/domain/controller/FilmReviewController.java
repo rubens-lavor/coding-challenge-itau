@@ -26,13 +26,19 @@ public class FilmReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Film>> filmList() { // TODO: criar FilmDTO
+    public ResponseEntity<List<FilmDTO>> filmList() {
         return ResponseEntity.ok(filmReviewService.listAll());
     }
+//
+//    @GetMapping(path = "/{id}")
+//    public ResponseEntity<Film> findById(@PathVariable UUID id) {
+//        return ResponseEntity.ok(filmReviewService.findById(id));
+//    }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<Film> findById(@PathVariable UUID id) {
-        return ResponseEntity.ok(filmReviewService.findById(id));
+    // TODO: endpoint que busca filme
+    @GetMapping(path = "/{imdbID}")
+    public ResponseEntity<FilmDTO> findByImdbID(@PathVariable String imdbID) {
+        return ResponseEntity.ok(filmReviewService.findByImdbID(imdbID));
     }
 
     @PostMapping("/create-reviewer")
@@ -40,9 +46,9 @@ public class FilmReviewController {
         return new ResponseEntity<>(filmReviewService.createReviewer(reviewerDTO), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}/review")
-    public ResponseEntity<FilmDTO> sendReview(@PathVariable UUID id, @RequestBody @Valid ReviewDTO reviewDTO) {
-        return new ResponseEntity<>(filmReviewService.sendReview(id, reviewDTO), HttpStatus.CREATED);
+    @PostMapping("/{imdbID}/review")
+    public ResponseEntity<FilmDTO> sendReview(@PathVariable String imdbID, @RequestBody @Valid ReviewDTO reviewDTO) {
+        return new ResponseEntity<>(filmReviewService.sendReview(imdbID, reviewDTO), HttpStatus.CREATED);
     }
 
 //    @PostMapping("/{id}/review/response")

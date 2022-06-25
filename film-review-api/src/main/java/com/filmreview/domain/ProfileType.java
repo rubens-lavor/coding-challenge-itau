@@ -17,8 +17,12 @@ public enum ProfileType {
         this.nextLevel = nextLevel;
     }
 
-    public ProfileType level(Integer score) {
+    public ProfileType level(Integer score) { // TODO: criar teste
         return this.initNextScore <= score ? ProfileType.valueOf(this.nextLevel) : this;
+    }
+
+    public Boolean isReader(){
+        return this.equals(ProfileType.READER);
     }
 
 }
