@@ -13,7 +13,7 @@ public class Film  extends AbstractEntity {
 
     private UUID externalId;
 
-    private String name;
+    private String title;
 
     @OneToMany(mappedBy = "film")
     private final List<Grade> grades = new ArrayList();
@@ -25,15 +25,20 @@ public class Film  extends AbstractEntity {
         return externalId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     public List<Grade> getGrades() {
         return grades;
     }
 
-    public List<Review> getComments() {
-        return reviews;
+
+    public void addReview(Review review) {
+        reviews.add(review);
     }
 }

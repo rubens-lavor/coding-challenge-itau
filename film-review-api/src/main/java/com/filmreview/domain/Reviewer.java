@@ -5,6 +5,8 @@ import com.filmreview.domain.entity.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Objects;
 
 @Entity
@@ -21,8 +23,11 @@ public class Reviewer extends AbstractEntity {
 
     private String password;
 
-    private Integer points = 0;
+    @Column(name = "SCORE")
+    private Integer score = 0;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PROFILE_TYPE")
     private ProfileType profileType = ProfileType.READER;
 
 //    @ManyToOne
@@ -55,6 +60,10 @@ public class Reviewer extends AbstractEntity {
         return password;
     }
 
+    public Integer getScore() {
+        return score;
+    }
+
     public ProfileType getProfileType() {
         return profileType;
     }
@@ -81,5 +90,20 @@ public class Reviewer extends AbstractEntity {
                 ", password='" + password + '\'' +
                 ", profileType=" + profileType +
                 '}';
+    }
+
+    public void addExperience() {
+        score += 1;
+        verifyTypeProfile();
+    }
+
+    private void verifyTypeProfile() {
+        if (score > 1000) return;
+        profileType = profileType.level(score);
+    }
+
+    public void updateToModerator() {
+        profileType = ProfileType.MODERATOR;
+        score = 1001;
     }
 }

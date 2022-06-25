@@ -1,7 +1,10 @@
 package com.filmreview.domain.controller;
 
 import com.filmreview.domain.Film;
+import com.filmreview.domain.Review;
 import com.filmreview.domain.Reviewer;
+import com.filmreview.domain.dto.FilmDTO;
+import com.filmreview.domain.dto.ReviewDTO;
 import com.filmreview.domain.dto.ReviewerDTO;
 import com.filmreview.domain.service.FilmReviewService;
 import org.springframework.http.HttpStatus;
@@ -32,10 +35,20 @@ public class FilmReviewController {
         return ResponseEntity.ok(filmReviewService.findById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<Reviewer> createReviewer(@RequestBody @Valid ReviewerDTO reviewerDTO) { // TODO: retornar ReviewerDTO
+    @PostMapping("/create-reviewer")
+    public ResponseEntity<ReviewerDTO> createReviewer(@RequestBody @Valid ReviewerDTO reviewerDTO) {
         return new ResponseEntity<>(filmReviewService.createReviewer(reviewerDTO), HttpStatus.CREATED);
     }
+
+    @PostMapping("/{id}/review")
+    public ResponseEntity<FilmDTO> sendReview(@PathVariable UUID id, @RequestBody @Valid ReviewDTO reviewDTO) {
+        return new ResponseEntity<>(filmReviewService.sendReview(id, reviewDTO), HttpStatus.CREATED);
+    }
+
+//    @PostMapping("/{id}/review/response")
+//    public ResponseEntity<Review> sendComment(@RequestBody @Valid ReviewerDTO reviewerDTO) {
+//        return new ResponseEntity<>(filmReviewService.sendComment(reviewerDTO), HttpStatus.CREATED);
+//    }
 
     @DeleteMapping(path = "/{id}") // TODO: verificar, mas acredito que seja possível deletar um comentário!!
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
