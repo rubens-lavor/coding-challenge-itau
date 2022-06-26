@@ -7,17 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Film {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Film extends  AbstractEntity {
 
     private String title;
 
     private String imdbID;
 
-    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private final List<Review> reviews = new ArrayList();
 
     public static Film of(String title, String imdbID) {
@@ -26,10 +22,6 @@ public class Film {
         film.imdbID = imdbID;
 
         return film;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getImdbID() {

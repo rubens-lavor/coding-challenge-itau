@@ -1,12 +1,10 @@
 package com.filmreview.domain;
 
 import com.filmreview.domain.entity.AbstractEntity;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Review extends AbstractEntity {
@@ -15,16 +13,12 @@ public class Review extends AbstractEntity {
     @JoinColumn(name = "reviewer_id")
     private Reviewer reviewer;
 
-    @OneToOne
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private final List<Comment> comments = new ArrayList<>();
 
     private Double grade;
 
-    //@ManyToOne(optional = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @NotFound(action = NotFoundAction.IGNORE)
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "film_id")
     private Film film;
 
@@ -47,8 +41,8 @@ public class Review extends AbstractEntity {
         return reviewer;
     }
 
-    public Comment getComment() {
-        return comment;
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public Double getGrade() {
@@ -64,7 +58,7 @@ public class Review extends AbstractEntity {
     }
 
     public void addComment(Comment comment) {
-        this.comment = comment;
+        this.comments.add(comment);
     }
 
     public void setFilm(Film film) {

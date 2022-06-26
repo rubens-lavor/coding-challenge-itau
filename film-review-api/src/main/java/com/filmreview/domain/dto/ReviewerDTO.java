@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class ReviewerDTO {
 
-    private Long id;
+    // private Long id;
 
     @NotEmpty(message = "The reviewer name cannot be empty")
     private String name;
@@ -28,7 +28,7 @@ public class ReviewerDTO {
 
     public static ReviewerDTO of(Reviewer reviewer){
         var dto = new ReviewerDTO();
-        dto.id = reviewer.getId();
+        // dto.id = reviewer.getId();
         dto.name = reviewer.getName();
         dto.username = reviewer.getUsername();
         dto.email = reviewer.getEmail();
@@ -36,9 +36,9 @@ public class ReviewerDTO {
         return dto;
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 
     public String getName() {
         return name;

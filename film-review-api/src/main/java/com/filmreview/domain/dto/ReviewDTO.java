@@ -1,37 +1,43 @@
 package com.filmreview.domain.dto;
 
 
-import com.filmreview.domain.Comment;
 import com.filmreview.domain.Review;
-import com.filmreview.domain.Reviewer;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ReviewDTO {
 
     private UUID id;
 
-    @NotEmpty(message = "The grade cannot be empty")
+    private UUID filmId;
+
     private Double grade;
 
     @NotEmpty(message = "The reviewer cannot be empty")
     private ReviewerDTO reviewer;
 
-    private CommentDTO comment;
+    private List<CommentDTO> comments;
 
     public static ReviewDTO of(Review review){
         var dto = new ReviewDTO();
         dto.id = review.getId();
+        dto.filmId = review.getFilm().getId(); // verificar se em alguma condição gera nullpoint
         dto.grade = review.getGrade();
         dto.reviewer = ReviewerDTO.of(review.getReviewer());
-        dto.comment = CommentDTO.of(review.getComment());
+        dto.comments = review.getComments().stream().map(CommentDTO::of).collect(Collectors.toList());
 
         return dto;
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public UUID getFilmId() {
+        return filmId;
     }
 
     public Double getGrade() {
@@ -42,7 +48,7 @@ public class ReviewDTO {
         return reviewer;
     }
 
-    public CommentDTO getComment() {
-        return comment;
+    public List<CommentDTO> getComments() {
+        return comments;
     }
 }

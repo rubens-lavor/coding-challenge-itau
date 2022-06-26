@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FilmDTO {
-    private Long id;
+    private UUID id;
     private String imdbID;
     private String title;
     private List<ReviewDTO> reviews;
@@ -29,7 +29,7 @@ public class FilmDTO {
                 .collect(Collectors.toList());
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

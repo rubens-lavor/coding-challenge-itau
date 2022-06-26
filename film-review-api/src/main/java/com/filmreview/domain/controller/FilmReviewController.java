@@ -36,12 +36,12 @@ public class FilmReviewController {
     }
 
     @PostMapping("/{imdbID}/review/grade") // qualquer um pode dar nota, desde que esteja logado
-    public ResponseEntity<FilmDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid ReviewGradeDTO reviewGradeDTO) {
+    public ResponseEntity<ReviewDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid ReviewGradeDTO reviewGradeDTO) {
         return new ResponseEntity<>(filmReviewService.sendGradeReview(imdbID, reviewGradeDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/{imdbID}/review/comment")
-    public ResponseEntity<FilmDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid ReviewCommentDTO reviewCommentDTO) {
+    public ResponseEntity<ReviewDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid ReviewCommentDTO reviewCommentDTO) {
         return new ResponseEntity<>(filmReviewService.sendCommentReview(imdbID, reviewCommentDTO), HttpStatus.CREATED);
     }
 

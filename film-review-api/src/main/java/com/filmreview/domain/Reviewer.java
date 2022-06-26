@@ -7,11 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Reviewer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Reviewer extends AbstractEntity{
 
     @Column(name = "name")
     private String name;
@@ -39,10 +35,6 @@ public class Reviewer {
         reviewer.password = password;
 
         return reviewer;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {

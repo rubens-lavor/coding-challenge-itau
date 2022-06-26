@@ -67,17 +67,13 @@ public class FilmReviewService {
         return objectResponse;
     }
 
-//    public Film findById(UUID id) {
-//        return filmRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Filme não encontrado"));
-//    }
-
     @Transactional
     public ReviewerDTO createReviewer(ReviewerDTO dto) {
         var reviewer = Reviewer.of(dto.getName(), dto.getUsername(), dto.getEmail(), dto.getPassword());
         return ReviewerDTO.of(reviewerRepository.save(reviewer));
     }
 
-    private Reviewer getReviewer(Long id) {
+    private Reviewer getReviewer(UUID id) {
         var reviewer = reviewerRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado"));
 
@@ -99,57 +95,50 @@ public class FilmReviewService {
     }
 
     @Transactional
-    public FilmDTO sendCommentReview(String imdbID, ReviewCommentDTO dto) {
+    public ReviewDTO sendCommentReview(String imdbID, ReviewCommentDTO dto) {
         var film = getFilm(imdbID);
-        var reviewer = getReviewer(Long.parseLong(dto.getReviewerId()));
+        var reviewer = getReviewer(UUID.fromString(dto.getReviewerId()));
         if (reviewer.getProfileType().isReader()) {
             //TODO: Criar classe Rule
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "READER cannot leave comments");
         }
         var comment = Comment.of(dto.getDescription());
-        commentRepository.save(comment);
-
         var review = getReview(reviewer, film);
         review.addComment(comment);
-
+        comment.setReview(review);
         film.addReview(review);
-        //review.setFilm(film); --> provavelmente se o review ainda não exisstir, terei que setar o film
-
         filmRepository.save(film);
 
         reviewer.addExperience();
         reviewerRepository.save(reviewer);
 
-        var dtoReturn = FilmDTO.of(film);
-        return dtoReturn;
+        // var dtoReturn = FilmDTO.of(film);
+        return ReviewDTO.of(review);
 
     }
 
     @Transactional
-    public FilmDTO sendGradeReview(String imdbID, ReviewGradeDTO dto) {
-        var reviewer = reviewerRepository.findById(Long.parseLong(dto.getReviewerId()))
+    public ReviewDTO sendGradeReview(String imdbID, ReviewGradeDTO dto) {
+        var reviewer = reviewerRepository.findById(UUID.fromString(dto.getReviewerId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado"));
         var film = getFilm(imdbID);
 
         var review = getReview(reviewer, film);
         review.addGrade(Double.valueOf(dto.getGrade()));
-        // acho que eu tenho que adicionar review primeiro em film, depois film em review
 
         var filmSaved = filmRepository.save(film);
 
         reviewer.addExperience();
         reviewerRepository.save(reviewer);
 
-        return FilmDTO.of(filmSaved);
+        return ReviewDTO.of(review);
 
     }
 
     private Review getReview(Reviewer reviewer, Film film) {
-        if (Objects.nonNull(film.getId())) {
+        if (Objects.nonNull(film.getId())) { // acredito que possivel retirar essa verificaçao, ja que agora
+            // estu gerando id randomicos ja  quando a classe e instanciada
             var optionalReview = reviewRepository.findByReviewerIdAndFilmId(reviewer.getId(), film.getId());
-//        var test1 = reviewRepository.findByFilmId(film.getId());
-//        var teste2 = reviewRepository.findByReviewerId(reviewer.getId());
-//        var test3 = reviewRepository.findByFilm(film);
             if (optionalReview.isPresent()) {
                 return optionalReview.get();
             }
