@@ -1,4 +1,4 @@
-package com.filmreview.domain.dto;
+package com.filmreview.dto;
 
 
 import com.filmreview.domain.Review;

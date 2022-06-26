@@ -1,6 +1,6 @@
 package com.filmreview.domain;
 
-import com.filmreview.domain.entity.AbstractCommentEntity;
+import com.filmreview.entity.AbstractCommentEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

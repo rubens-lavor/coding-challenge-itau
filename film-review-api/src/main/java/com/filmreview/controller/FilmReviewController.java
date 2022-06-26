@@ -1,7 +1,7 @@
-package com.filmreview.domain.controller;
+package com.filmreview.controller;
 
-import com.filmreview.domain.dto.*;
-import com.filmreview.domain.service.FilmReviewService;
+import com.filmreview.dto.*;
+import com.filmreview.service.FilmReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

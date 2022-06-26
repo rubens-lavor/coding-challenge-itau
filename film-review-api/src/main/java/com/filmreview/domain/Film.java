@@ -1,6 +1,6 @@
 package com.filmreview.domain;
 
-import com.filmreview.domain.entity.AbstractEntity;
+import com.filmreview.entity.AbstractEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;

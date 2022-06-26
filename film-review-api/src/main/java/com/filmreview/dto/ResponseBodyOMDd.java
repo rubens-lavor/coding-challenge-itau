@@ -1,4 +1,4 @@
-package com.filmreview.domain.dto;
+package com.filmreview.dto;
 
 public class ResponseBodyOMDd {
     public String Title;

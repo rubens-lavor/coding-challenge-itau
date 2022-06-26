@@ -1,4 +1,4 @@
-package com.filmreview.domain.repository;
+package com.filmreview.repository;
 
 import com.filmreview.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

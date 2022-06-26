@@ -1,4 +1,4 @@
-package com.filmreview.domain.entity;
+package com.filmreview.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

@@ -1,14 +1,9 @@
-package com.filmreview.domain.dto;
+package com.filmreview.dto;
 
 
-import com.filmreview.domain.Review;
 import com.filmreview.domain.Reviewer;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 public class ReviewerDTO {
 

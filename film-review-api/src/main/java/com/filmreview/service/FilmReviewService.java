@@ -1,14 +1,14 @@
-package com.filmreview.domain.service;
+package com.filmreview.service;
 
 import com.filmreview.domain.Comment;
 import com.filmreview.domain.Film;
 import com.filmreview.domain.Review;
 import com.filmreview.domain.Reviewer;
-import com.filmreview.domain.dto.*;
-import com.filmreview.domain.repository.CommentRepository;
-import com.filmreview.domain.repository.FilmRepository;
-import com.filmreview.domain.repository.ReviewRepository;
-import com.filmreview.domain.repository.ReviewerRepository;
+import com.filmreview.repository.CommentRepository;
+import com.filmreview.repository.FilmRepository;
+import com.filmreview.repository.ReviewRepository;
+import com.filmreview.repository.ReviewerRepository;
+import com.filmreview.dto.*;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

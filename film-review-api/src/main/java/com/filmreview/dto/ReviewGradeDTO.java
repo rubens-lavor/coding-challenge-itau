@@ -1,4 +1,4 @@
-package com.filmreview.domain.dto;
+package com.filmreview.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
