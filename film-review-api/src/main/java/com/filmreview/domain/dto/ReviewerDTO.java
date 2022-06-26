@@ -4,6 +4,7 @@ package com.filmreview.domain.dto;
 import com.filmreview.domain.Review;
 import com.filmreview.domain.Reviewer;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 public class ReviewerDTO {
 
-    private UUID id;
+    private Long id;
 
     @NotEmpty(message = "The reviewer name cannot be empty")
     private String name;
@@ -35,7 +36,7 @@ public class ReviewerDTO {
         return dto;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 

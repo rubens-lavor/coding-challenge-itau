@@ -1,11 +1,6 @@
 package com.filmreview.domain.controller;
 
-import com.filmreview.domain.Film;
-import com.filmreview.domain.Review;
-import com.filmreview.domain.Reviewer;
-import com.filmreview.domain.dto.FilmDTO;
-import com.filmreview.domain.dto.ReviewDTO;
-import com.filmreview.domain.dto.ReviewerDTO;
+import com.filmreview.domain.dto.*;
 import com.filmreview.domain.service.FilmReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,29 +21,34 @@ public class FilmReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FilmDTO>> filmList() {
+    public ResponseEntity<List<FilmDTO>> filmList() { //TODO: deve estar logado, ou seja, conta criada.
         return ResponseEntity.ok(filmReviewService.listAll());
     }
-//
-//    @GetMapping(path = "/{id}")
-//    public ResponseEntity<Film> findById(@PathVariable UUID id) {
-//        return ResponseEntity.ok(filmReviewService.findById(id));
-//    }
 
-    // TODO: endpoint que busca filme
     @GetMapping(path = "/{imdbID}")
     public ResponseEntity<FilmDTO> findByImdbID(@PathVariable String imdbID) {
         return ResponseEntity.ok(filmReviewService.findByImdbID(imdbID));
     }
 
-    @PostMapping("/create-reviewer")
+    @PostMapping("/create-account")
     public ResponseEntity<ReviewerDTO> createReviewer(@RequestBody @Valid ReviewerDTO reviewerDTO) {
         return new ResponseEntity<>(filmReviewService.createReviewer(reviewerDTO), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{imdbID}/review")
-    public ResponseEntity<FilmDTO> sendReview(@PathVariable String imdbID, @RequestBody @Valid ReviewDTO reviewDTO) {
-        return new ResponseEntity<>(filmReviewService.sendReview(imdbID, reviewDTO), HttpStatus.CREATED);
+    @PostMapping("/{imdbID}/review/grade") // qualquer um pode dar nota, desde que esteja logado
+    public ResponseEntity<FilmDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid ReviewGradeDTO reviewGradeDTO) {
+        return new ResponseEntity<>(filmReviewService.sendGradeReview(imdbID, reviewGradeDTO), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{imdbID}/review/comment")
+    public ResponseEntity<FilmDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid ReviewCommentDTO reviewCommentDTO) {
+        return new ResponseEntity<>(filmReviewService.sendCommentReview(imdbID, reviewCommentDTO), HttpStatus.CREATED);
+    }
+
+    // endpoint para responder comentários nos reviews
+    @PostMapping("/review/{id}/reply")
+    public ResponseEntity<FilmDTO> replyToReview(@PathVariable UUID id, @RequestBody @Valid ReviewDTO reviewDTO) {
+        return new ResponseEntity<>(filmReviewService.replyToReview(id, reviewDTO), HttpStatus.CREATED);
     }
 
 //    @PostMapping("/{id}/review/response")

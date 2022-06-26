@@ -3,14 +3,15 @@ package com.filmreview.domain;
 
 import com.filmreview.domain.entity.AbstractEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Reviewer extends AbstractEntity {
+public class Reviewer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -30,10 +31,6 @@ public class Reviewer extends AbstractEntity {
     @Column(name = "PROFILE_TYPE")
     private ProfileType profileType = ProfileType.READER;
 
-//    @ManyToOne
-//    @JoinColumn(name = "mention_id")
-//    private AbstractCommentEntity mention;
-
     public static Reviewer of(String name, String username, String email, String password){
         var reviewer = new Reviewer();
         reviewer.name = name;
@@ -42,6 +39,10 @@ public class Reviewer extends AbstractEntity {
         reviewer.password = password;
 
         return reviewer;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

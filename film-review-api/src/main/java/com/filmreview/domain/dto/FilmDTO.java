@@ -7,10 +7,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FilmDTO {
-    private UUID id;
+    private Long id;
     private String imdbID;
     private String title;
-    private List<GradeDTO> grades;
     private List<ReviewDTO> reviews;
 
     public static FilmDTO of(Film film){
@@ -18,7 +17,6 @@ public class FilmDTO {
         dto.id = film.getId();
         dto.imdbID = film.getImdbID();
         dto.title = film.getTitle();
-        dto.grades = getGrades(film);
         dto.reviews = getReviews(film);
 
         return dto;
@@ -31,14 +29,7 @@ public class FilmDTO {
                 .collect(Collectors.toList());
     }
 
-    private static List<GradeDTO> getGrades(Film film) {
-        return film.getGrades()
-                .stream()
-                .map(GradeDTO::of)
-                .collect(Collectors.toList());
-    }
-
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
@@ -48,10 +39,6 @@ public class FilmDTO {
 
     public String getTitle() {
         return title;
-    }
-
-    public List<GradeDTO> getGrades() {
-        return grades;
     }
 
     public List<ReviewDTO> getReviews() {

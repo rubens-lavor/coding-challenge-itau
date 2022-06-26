@@ -7,18 +7,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ResponseReview extends AbstractCommentEntity {
+public class ReplyComment extends AbstractCommentEntity {
 
     @ManyToOne
-    @JoinColumn(name = "review_id")
-    private Review review;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @Override
     public String toString() {
-        return "ResponseReview{" +
-                "comment='" + comment + '\'' +
-                ", like=" + like +
-                ", dislike=" + dislike +
+        return "ReplyComment{" +
+                "description='" + description + '\'' +
                 '}';
     }
 }
