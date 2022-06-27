@@ -2,13 +2,12 @@ package com.filmreview.domain;
 
 import com.filmreview.entity.AbstractCommentEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Quotes")
 public class QuoteComment extends AbstractCommentEntity {
 
     @OneToOne
@@ -24,6 +23,7 @@ public class QuoteComment extends AbstractCommentEntity {
         quote.description = description;
         quote.comment = comment;
         quote.sender = sender;
+        quote.createdAt = LocalDateTime.now();
 
         return quote;
     }

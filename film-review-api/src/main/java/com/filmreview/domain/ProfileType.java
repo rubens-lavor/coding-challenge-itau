@@ -17,12 +17,16 @@ public enum ProfileType {
         this.nextLevel = nextLevel;
     }
 
-    public ProfileType level(Integer score) { // TODO: criar teste
+    public ProfileType level(Integer score) {
         return this.initNextScore <= score ? ProfileType.valueOf(this.nextLevel) : this;
     }
 
     public Boolean isReader(){
         return this.equals(ProfileType.READER);
+    }
+
+    public Boolean isAdvancedOrModerator() {
+        return this.equals(ProfileType.ADVANCED) || this.equals(ProfileType.MODERATOR);
     }
 
 }

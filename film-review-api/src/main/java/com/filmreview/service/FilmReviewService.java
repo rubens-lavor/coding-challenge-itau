@@ -6,6 +6,7 @@ import com.filmreview.dto.responses.OMDdResponseBody;
 import com.filmreview.exception.BadRequestException;
 import com.filmreview.repository.*;
 import com.filmreview.dto.*;
+import com.filmreview.utils.Rule;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -85,10 +86,11 @@ public class FilmReviewService {
     public ReviewDTO sendCommentReview(String imdbID, CommentRequestBody dto) {
         var film = getFilm(imdbID);
         var reviewer = getReviewer(dto.getReviewerId());
-        if (reviewer.getProfileType().isReader()) {
-            //TODO: Criar classe Rule
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "READER cannot leave comments");
-        }
+        Rule.check(!reviewer.getProfileType().isReader(), "Reader profile cannot leave comments");
+//        if (reviewer.getProfileType().isReader()) {
+//            //TODO: Criar classe Rule
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "READER cannot leave comments");
+//        }
         var comment = Comment.of(dto.getDescription());
         var review = getReview(reviewer, film);
         review.addComment(comment);
@@ -144,6 +146,7 @@ public class FilmReviewService {
         // TODO: receber o id do reviewer!!! ReplyAndQuote devem conter o id de quem escreveu.
         // TODO: adicionar atributo createdDate doo tipo LocaDateTime.now(), na classe reply e quote!!! IMPORTANTE !!!
         var sender = getReviewer(dto.getSenderId());
+        Rule.check(!sender.getProfileType().isReader(), "Reader profile cannot leave replies");
         var comment = commentRepository.getOne(id);
         var reply = ReplyComment.of(dto.getDescription(), comment, sender);
         comment.addReply(reply);
@@ -165,6 +168,7 @@ public class FilmReviewService {
     @Transactional
     public CommentDTO quoteToComment(UUID id, ReplyAndQuoteRequestBody dto) {
         var sender = getReviewer(dto.getSenderId());
+        Rule.check(sender.getProfileType().isAdvancedOrModerator(), "Only advanced profiles and moderators can make quotes");
         var comment = commentRepository.getOne(id);
         var quote = QuoteComment.of(dto.getDescription(), comment, sender);
         comment.addQuote(quote);
@@ -187,6 +191,7 @@ public class FilmReviewService {
     @Transactional
     public CommentDTO evaluationComment(UUID id, EvaluationCommentRequestBody dto) {
         var sender = getReviewer(dto.getSenderId());
+        Rule.check(sender.getProfileType().isAdvancedOrModerator(), "Only advanced profiles and moderators can leave evaluation");
         var comment = commentRepository.getOne(id);
         if (evaluationCommentRepository.existsBySenderAndComment(sender,comment)) {
             throw new BadRequestException("The same user cannot rate a the same comment twice");

@@ -3,6 +3,7 @@ package com.filmreview.dto;
 import com.filmreview.domain.Comment;
 import com.filmreview.domain.EvaluationType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ public class CommentDTO {
     private Boolean isRepeated;
     private long like = 0;
     private long dislike = 0;
+    private LocalDateTime createdAt;
     private List<ReplyCommentDTO> replies;
     private List<QuoteCommentDTO> quotes;
 
@@ -21,6 +23,7 @@ public class CommentDTO {
         dto.id = comment.getId();
         dto.description = comment.getDescription();
         dto.isRepeated = comment.getRepeated();
+        dto.createdAt = comment.getCreatedAt();
         dto.replies = comment.getReplies().stream().map(ReplyCommentDTO::of).collect(Collectors.toList());
         dto.quotes = comment.getQuotes().stream().map(QuoteCommentDTO::of).collect(Collectors.toList());
         dto.like = comment.getEvaluations()
@@ -55,6 +58,10 @@ public class CommentDTO {
 
     public long getDislike() {
         return dislike;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public List<ReplyCommentDTO> getReplies() {

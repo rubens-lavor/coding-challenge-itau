@@ -36,27 +36,27 @@ public class FilmReviewController {
         return new ResponseEntity<>(filmReviewService.createReviewer(body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{imdbID}/review/grade") // qualquer um pode dar nota, desde que esteja logado
+    @PostMapping("/{imdbID}/review/grade")
     public ResponseEntity<ReviewDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid GradeRequestBody body) {
         return new ResponseEntity<>(filmReviewService.sendGradeReview(imdbID, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{imdbID}/review/comment")
+    @PostMapping("/{imdbID}/review/comment") // nível básico ou superior
     public ResponseEntity<ReviewDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid CommentRequestBody body) {
         return new ResponseEntity<>(filmReviewService.sendCommentReview(imdbID, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/review/comment/{id}/reply")
+    @PostMapping("/review/comment/{id}/reply") // nível básico ou superior
     public ResponseEntity<CommentDTO> replyToComment(@PathVariable UUID id, @RequestBody @Valid ReplyAndQuoteRequestBody body) {
         return new ResponseEntity<>(filmReviewService.replyToComment(id, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/review/comment/{id}/quote")
+    @PostMapping("/review/comment/{id}/quote") // nível avançado ou superior
     public ResponseEntity<CommentDTO> quoteToComment(@PathVariable UUID id, @RequestBody @Valid ReplyAndQuoteRequestBody body) {
         return new ResponseEntity<>(filmReviewService.quoteToComment(id, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/review/comment/{id}/evaluation")
+    @PostMapping("/review/comment/{id}/evaluation") // nível avançado ou superior
     public ResponseEntity<CommentDTO> evaluationComment(@PathVariable UUID id, @RequestBody @Valid EvaluationCommentRequestBody body) {
         return new ResponseEntity<>(filmReviewService.evaluationComment(id, body), HttpStatus.CREATED);
     }

@@ -2,13 +2,12 @@ package com.filmreview.domain;
 
 import com.filmreview.entity.AbstractCommentEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Replies")
 public class ReplyComment extends AbstractCommentEntity {
 
     @OneToOne
@@ -24,13 +23,7 @@ public class ReplyComment extends AbstractCommentEntity {
         reply.description = description;
         reply.comment = comment;
         reply.sender = sender;
-
-        return reply;
-    }
-
-    public static ReplyComment of(String description) {
-        var reply = new ReplyComment();
-        reply.description = description;
+        reply.createdAt = LocalDateTime.now();
 
         return reply;
     }

@@ -1,16 +1,22 @@
 package com.filmreview.entity;
 
 import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 @MappedSuperclass
 public abstract class AbstractCommentEntity extends AbstractEntity {
 
     protected String description;
 
+    protected LocalDateTime createdAt;
+
     public String getDescription() {
         return description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override

@@ -3,11 +3,13 @@ package com.filmreview.domain;
 import com.filmreview.entity.AbstractCommentEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Comments")
 public class Comment extends AbstractCommentEntity {
 
     private Boolean isRepeated = false;
@@ -28,6 +30,7 @@ public class Comment extends AbstractCommentEntity {
     public static Comment of(String description) {
         var comment = new Comment();
         comment.description = description;
+        comment.createdAt = LocalDateTime.now();
 
         return comment;
     }

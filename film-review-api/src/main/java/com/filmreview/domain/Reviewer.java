@@ -7,24 +7,20 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Reviewers")
 public class Reviewer extends AbstractEntity{
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "username")
     private String username;
 
-    @Column(name = "email")
     private String email;
 
     private String password;
 
-    @Column(name = "SCORE")
     private Integer score = 0;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "PROFILE_TYPE")
     private ProfileType profileType = ProfileType.READER;
 
     public static Reviewer of(String name, String username, String email, String password){

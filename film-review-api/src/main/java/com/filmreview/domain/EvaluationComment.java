@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Evaluations")
 public class EvaluationComment extends AbstractEntity {
 
     @OneToOne

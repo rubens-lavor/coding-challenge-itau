@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "Films")
 public class Film extends  AbstractEntity {
 
     private String title;
 
+    @Column(name = "imdb_ID")
     private String imdbID;
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
