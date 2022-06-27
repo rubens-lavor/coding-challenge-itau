@@ -5,8 +5,6 @@ import com.filmreview.domain.QuoteComment;
 import java.util.UUID;
 
 public final class QuoteCommentDTO {
-    //TODO: considerar criar um dto abstrato para os dtos de comentários
-    // com médoto genérico para instaciar o dto
     private UUID id;
     private String description;
 
@@ -16,5 +14,13 @@ public final class QuoteCommentDTO {
         dto.description = quoteComment.getDescription();
 
         return dto;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

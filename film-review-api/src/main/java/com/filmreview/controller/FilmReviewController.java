@@ -1,6 +1,7 @@
 package com.filmreview.controller;
 
 import com.filmreview.dto.*;
+import com.filmreview.dto.requests.*;
 import com.filmreview.service.FilmReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,35 +32,39 @@ public class FilmReviewController {
     }
 
     @PostMapping("/create-account")
-    public ResponseEntity<ReviewerDTO> createReviewer(@RequestBody @Valid ReviewerDTO reviewerDTO) {
-        return new ResponseEntity<>(filmReviewService.createReviewer(reviewerDTO), HttpStatus.CREATED);
+    public ResponseEntity<ReviewerDTO> createReviewer(@RequestBody @Valid ReviewerRequestBody body) {
+        return new ResponseEntity<>(filmReviewService.createReviewer(body), HttpStatus.CREATED);
     }
 
     @PostMapping("/{imdbID}/review/grade") // qualquer um pode dar nota, desde que esteja logado
-    public ResponseEntity<ReviewDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid ReviewGradeDTO reviewGradeDTO) {
-        return new ResponseEntity<>(filmReviewService.sendGradeReview(imdbID, reviewGradeDTO), HttpStatus.CREATED);
+    public ResponseEntity<ReviewDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid GradeRequestBody body) {
+        return new ResponseEntity<>(filmReviewService.sendGradeReview(imdbID, body), HttpStatus.CREATED);
     }
 
     @PostMapping("/{imdbID}/review/comment")
-    public ResponseEntity<ReviewDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid ReviewCommentDTO reviewCommentDTO) {
-        return new ResponseEntity<>(filmReviewService.sendCommentReview(imdbID, reviewCommentDTO), HttpStatus.CREATED);
+    public ResponseEntity<ReviewDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid CommentRequestBody body) {
+        return new ResponseEntity<>(filmReviewService.sendCommentReview(imdbID, body), HttpStatus.CREATED);
     }
 
-    // endpoint para responder comentários nos reviews
-    @PostMapping("/review/{id}/reply")
-    public ResponseEntity<FilmDTO> replyToReview(@PathVariable UUID id, @RequestBody @Valid ReviewDTO reviewDTO) {
-        return new ResponseEntity<>(filmReviewService.replyToReview(id, reviewDTO), HttpStatus.CREATED);
+    @PostMapping("/review/comment/{id}/reply")
+    public ResponseEntity<CommentDTO> replyToComment(@PathVariable UUID id, @RequestBody @Valid ReplyAndQuoteRequestBody body) {
+        return new ResponseEntity<>(filmReviewService.replyToComment(id, body), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/review/comment/{id}/quote")
+    public ResponseEntity<CommentDTO> quoteToComment(@PathVariable UUID id, @RequestBody @Valid ReplyAndQuoteRequestBody body) {
+        return new ResponseEntity<>(filmReviewService.quoteToComment(id, body), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/review/comment/{id}/evaluation")
+    public ResponseEntity<CommentDTO> evaluationComment(@PathVariable UUID id, @RequestBody @Valid EvaluationCommentRequestBody body) {
+        return new ResponseEntity<>(filmReviewService.evaluationComment(id, body), HttpStatus.CREATED);
     }
 
 //    @PostMapping("/{id}/review/response")
 //    public ResponseEntity<Review> sendComment(@RequestBody @Valid ReviewerDTO reviewerDTO) {
 //        return new ResponseEntity<>(filmReviewService.sendComment(reviewerDTO), HttpStatus.CREATED);
 //    }
-
-    @DeleteMapping(path = "/{id}") // TODO: verificar, mas acredito que seja possível deletar um comentário!!
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 
     //TODO: métodos para like e dislike
 

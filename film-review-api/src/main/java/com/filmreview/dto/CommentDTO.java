@@ -1,6 +1,7 @@
 package com.filmreview.dto;
 
 import com.filmreview.domain.Comment;
+import com.filmreview.domain.EvaluationType;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,8 +11,8 @@ public class CommentDTO {
     private UUID id;
     private String description;
     private Boolean isRepeated;
-    private Integer like;
-    private Integer dislike;
+    private long like = 0;
+    private long dislike = 0;
     private List<ReplyCommentDTO> replies;
     private List<QuoteCommentDTO> quotes;
 
@@ -20,10 +21,19 @@ public class CommentDTO {
         dto.id = comment.getId();
         dto.description = comment.getDescription();
         dto.isRepeated = comment.getRepeated();
-        dto.like = comment.getLike();
-        dto.dislike = comment.getDislike();
         dto.replies = comment.getReplies().stream().map(ReplyCommentDTO::of).collect(Collectors.toList());
         dto.quotes = comment.getQuotes().stream().map(QuoteCommentDTO::of).collect(Collectors.toList());
+        dto.like = comment.getEvaluations()
+                .stream()
+                .filter(it -> it.getType().equals(EvaluationType.LIKE))
+                .collect(Collectors.toList())
+                .size();
+        dto.dislike = comment.getEvaluations()
+                .stream()
+                .filter(it -> it.getType().equals(EvaluationType.DISLIKE))
+                .collect(Collectors.toList())
+                .size();
+
         return dto;
     }
 
@@ -39,11 +49,11 @@ public class CommentDTO {
         return isRepeated;
     }
 
-    public Integer getLike() {
+    public long getLike() {
         return like;
     }
 
-    public Integer getDislike() {
+    public long getDislike() {
         return dislike;
     }
 

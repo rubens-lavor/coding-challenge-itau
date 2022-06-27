@@ -2,26 +2,23 @@ package com.filmreview.domain;
 
 import com.filmreview.entity.AbstractCommentEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Comment extends AbstractCommentEntity {
 
     private Boolean isRepeated = false;
 
-    private Integer like = 0;
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private final List<EvaluationComment> evaluations = new ArrayList<>();
 
-    private Integer dislike = 0;
-
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private final List<ReplyComment> replies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private final List<QuoteComment> quotes = new ArrayList<>();
 
     @ManyToOne
@@ -39,12 +36,8 @@ public class Comment extends AbstractCommentEntity {
         return isRepeated;
     }
 
-    public Integer getLike() {
-        return like;
-    }
-
-    public Integer getDislike() {
-        return dislike;
+    public List<EvaluationComment> getEvaluations() {
+        return evaluations;
     }
 
     public List<ReplyComment> getReplies() {
@@ -57,5 +50,48 @@ public class Comment extends AbstractCommentEntity {
 
     public void setReview(Review review) {
         this.review = review;
+    }
+
+    public void addReply(ReplyComment reply) {
+        if (replies.contains(reply)) return;
+        replies.add(reply);
+    }
+
+    public void addQuote(QuoteComment quote) {
+        if (quotes.contains(quote)) return;
+        quotes.add(quote);
+    }
+
+    public void addEvaluation(EvaluationComment evaluation) {
+        evaluations.add(evaluation);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(isRepeated, comment.isRepeated)
+                && Objects.equals(evaluations, comment.evaluations)
+                && Objects.equals(replies, comment.replies)
+                && Objects.equals(quotes, comment.quotes)
+                && Objects.equals(review, comment.review);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isRepeated, evaluations, replies, quotes, review);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "isRepeated=" + isRepeated +
+                ", evaluations=" + evaluations +
+                ", replies=" + replies +
+                ", quotes=" + quotes +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

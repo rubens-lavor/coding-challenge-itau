@@ -1,13 +1,10 @@
-package com.filmreview.dto;
+package com.filmreview.dto.requests;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
-public class ReviewGradeDTO {
+public class GradeRequestBody {
 
     @NotEmpty(message = "The grade cannot be empty")
-    @NotNull(message = "notnull")
     private String grade;
 
     @NotEmpty(message = "The reviewer cannot be empty")

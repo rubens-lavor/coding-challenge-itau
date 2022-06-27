@@ -1,11 +1,8 @@
-package com.filmreview.dto;
-
-import com.filmreview.domain.Review;
+package com.filmreview.dto.requests;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.UUID;
 
-public class ReviewCommentDTO {
+public class CommentRequestBody {
     @NotEmpty(message = "The comment is required")
     private String description;
 

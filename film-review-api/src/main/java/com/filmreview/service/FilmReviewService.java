@@ -1,13 +1,10 @@
 package com.filmreview.service;
 
-import com.filmreview.domain.Comment;
-import com.filmreview.domain.Film;
-import com.filmreview.domain.Review;
-import com.filmreview.domain.Reviewer;
-import com.filmreview.repository.CommentRepository;
-import com.filmreview.repository.FilmRepository;
-import com.filmreview.repository.ReviewRepository;
-import com.filmreview.repository.ReviewerRepository;
+import com.filmreview.domain.*;
+import com.filmreview.dto.requests.*;
+import com.filmreview.dto.responses.OMDdResponseBody;
+import com.filmreview.exception.BadRequestException;
+import com.filmreview.repository.*;
 import com.filmreview.dto.*;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
@@ -27,17 +24,19 @@ public class FilmReviewService {
     private final ReviewerRepository reviewerRepository;
     private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
+    private final EvaluationCommentRepository evaluationCommentRepository;
     private final RestTemplateBuilder restTemplateBuilder;
 
     public FilmReviewService(FilmRepository filmRepository,
                              ReviewerRepository reviewerRepository,
                              ReviewRepository reviewRepository,
-                             CommentRepository commentRepository, RestTemplateBuilder restTemplateBuilder
+                             CommentRepository commentRepository, EvaluationCommentRepository evaluationCommentRepository, RestTemplateBuilder restTemplateBuilder
     ) {
         this.filmRepository = filmRepository;
         this.reviewerRepository = reviewerRepository;
         this.reviewRepository = reviewRepository;
         this.commentRepository = commentRepository;
+        this.evaluationCommentRepository = evaluationCommentRepository;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
@@ -57,8 +56,8 @@ public class FilmReviewService {
         return FilmDTO.of(film);
     }
 
-    private ResponseBodyOMDd getResponseBodyOMDd(String url) {
-        var objectResponse = restTemplateBuilder.build().getForObject(url, ResponseBodyOMDd.class);
+    private OMDdResponseBody getResponseBodyOMDd(String url) {
+        var objectResponse = restTemplateBuilder.build().getForObject(url, OMDdResponseBody.class);
 
         assert Objects.nonNull(objectResponse);
         if (objectResponse.Response.equals("False")) {
@@ -68,16 +67,9 @@ public class FilmReviewService {
     }
 
     @Transactional
-    public ReviewerDTO createReviewer(ReviewerDTO dto) {
+    public ReviewerDTO createReviewer(ReviewerRequestBody dto) {
         var reviewer = Reviewer.of(dto.getName(), dto.getUsername(), dto.getEmail(), dto.getPassword());
         return ReviewerDTO.of(reviewerRepository.save(reviewer));
-    }
-
-    private Reviewer getReviewer(UUID id) {
-        var reviewer = reviewerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado"));
-
-        return reviewer;
     }
 
     private Film getFilm(String imdbID) {
@@ -90,14 +82,9 @@ public class FilmReviewService {
     }
 
     @Transactional
-    public FilmDTO replyToReview(UUID id, ReviewDTO reviewDTO) {
-        return null;
-    }
-
-    @Transactional
-    public ReviewDTO sendCommentReview(String imdbID, ReviewCommentDTO dto) {
+    public ReviewDTO sendCommentReview(String imdbID, CommentRequestBody dto) {
         var film = getFilm(imdbID);
-        var reviewer = getReviewer(UUID.fromString(dto.getReviewerId()));
+        var reviewer = getReviewer(dto.getReviewerId());
         if (reviewer.getProfileType().isReader()) {
             //TODO: Criar classe Rule
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "READER cannot leave comments");
@@ -109,8 +96,9 @@ public class FilmReviewService {
         film.addReview(review);
         filmRepository.save(film);
 
-        reviewer.addExperience();
-        reviewerRepository.save(reviewer);
+        addExperience(reviewer);
+//        reviewer.addExperience();
+//        reviewerRepository.save(reviewer);
 
         // var dtoReturn = FilmDTO.of(film);
         return ReviewDTO.of(review);
@@ -118,18 +106,18 @@ public class FilmReviewService {
     }
 
     @Transactional
-    public ReviewDTO sendGradeReview(String imdbID, ReviewGradeDTO dto) {
-        var reviewer = reviewerRepository.findById(UUID.fromString(dto.getReviewerId()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado"));
+    public ReviewDTO sendGradeReview(String imdbID, GradeRequestBody dto) {
+        var reviewer = getReviewer(dto.getReviewerId());
         var film = getFilm(imdbID);
 
         var review = getReview(reviewer, film);
         review.addGrade(Double.valueOf(dto.getGrade()));
 
-        var filmSaved = filmRepository.save(film);
+        filmRepository.save(film);
 
-        reviewer.addExperience();
-        reviewerRepository.save(reviewer);
+        addExperience(reviewer);
+//        reviewer.addExperience();
+//        reviewerRepository.save(reviewer);
 
         return ReviewDTO.of(review);
 
@@ -150,5 +138,63 @@ public class FilmReviewService {
         review.setFilm(film);
 
         return review;
+    }
+
+    public CommentDTO replyToComment(UUID id, ReplyAndQuoteRequestBody dto) {
+        // TODO: receber o id do reviewer!!! ReplyAndQuote devem conter o id de quem escreveu.
+        // TODO: adicionar atributo createdDate doo tipo LocaDateTime.now(), na classe reply e quote!!! IMPORTANTE !!!
+        var sender = getReviewer(dto.getSenderId());
+        var comment = commentRepository.getOne(id);
+        var reply = ReplyComment.of(dto.getDescription(), comment, sender);
+        comment.addReply(reply);
+        addExperience(sender);
+        return saveComment(comment);
+    }
+
+    @Transactional
+    private void addExperience(Reviewer reviewer) {
+        reviewer.addExperience();
+        reviewerRepository.save(reviewer);
+    }
+
+    @Transactional
+    private Reviewer getReviewer(String id) {
+        return reviewerRepository.getOne(getId(id));
+    }
+
+    @Transactional
+    public CommentDTO quoteToComment(UUID id, ReplyAndQuoteRequestBody dto) {
+        var sender = getReviewer(dto.getSenderId());
+        var comment = commentRepository.getOne(id);
+        var quote = QuoteComment.of(dto.getDescription(), comment, sender);
+        comment.addQuote(quote);
+        return saveComment(comment);
+    }
+
+    @Transactional
+    private CommentDTO saveComment(Comment comment) {
+        return CommentDTO.of(commentRepository.save(comment));
+    }
+
+    private UUID getId(String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (Exception e) {
+            throw new BadRequestException("id not valid: " + e.getMessage());
+        }
+    }
+
+    @Transactional
+    public CommentDTO evaluationComment(UUID id, EvaluationCommentRequestBody dto) {
+        var sender = getReviewer(dto.getSenderId());
+        var comment = commentRepository.getOne(id);
+        if (evaluationCommentRepository.existsBySenderAndComment(sender,comment)) {
+            throw new BadRequestException("The same user cannot rate a the same comment twice");
+        }
+        var type = EvaluationType.valueOf(dto.getType());
+        var evaluation = EvaluationComment.of(sender, type, comment);
+        comment.addEvaluation(evaluation);
+
+        return saveComment(comment);
     }
 }

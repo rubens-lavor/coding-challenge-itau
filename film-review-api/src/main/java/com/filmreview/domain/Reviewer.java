@@ -66,7 +66,9 @@ public class Reviewer extends AbstractEntity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reviewer reviewer = (Reviewer) o;
-        return Objects.equals(name, reviewer.name) && Objects.equals(username, reviewer.username) && Objects.equals(email, reviewer.email) && Objects.equals(password, reviewer.password) && profileType == reviewer.profileType;
+        return Objects.equals(name, reviewer.name)
+                && Objects.equals(username, reviewer.username)
+                && Objects.equals(email, reviewer.email);
     }
 
     @Override
@@ -80,7 +82,6 @@ public class Reviewer extends AbstractEntity{
                 "name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", profileType=" + profileType +
                 '}';
     }

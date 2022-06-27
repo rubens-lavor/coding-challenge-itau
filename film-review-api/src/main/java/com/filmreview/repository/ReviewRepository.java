@@ -1,6 +1,5 @@
 package com.filmreview.repository;
 
-import com.filmreview.domain.Film;
 import com.filmreview.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 

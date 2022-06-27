@@ -1,6 +1,6 @@
-package com.filmreview.dto;
+package com.filmreview.dto.responses;
 
-public class ResponseBodyOMDd {
+public class OMDdResponseBody {
     public String Title;
     public String imdbID;
     public String Response;
