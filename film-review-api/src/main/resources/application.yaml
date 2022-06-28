@@ -1,0 +1,22 @@
+server:
+  error:
+    include-stacktrace: on_param
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/film_review?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
