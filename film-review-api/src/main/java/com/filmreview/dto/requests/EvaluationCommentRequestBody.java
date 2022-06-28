@@ -1,7 +1,5 @@
 package com.filmreview.dto.requests;
 
-import com.filmreview.domain.EvaluationType;
-
 import javax.validation.constraints.NotEmpty;
 
 public class EvaluationCommentRequestBody {

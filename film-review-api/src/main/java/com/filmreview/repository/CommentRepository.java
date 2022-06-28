@@ -1,8 +1,6 @@
 package com.filmreview.repository;
 
 import com.filmreview.domain.Comment;
-import com.filmreview.domain.Reviewer;
-import com.filmreview.entity.AbstractCommentEntity;
 import com.filmreview.exception.BadRequestException;
 import org.springframework.data.jpa.repository.JpaRepository;
 

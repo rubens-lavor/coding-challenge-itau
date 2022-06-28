@@ -16,7 +16,7 @@ public class ReviewDTO {
 
     private Double grade;
 
-    @NotEmpty(message = "The reviewer cannot be empty")
+    @NotEmpty(message = "Reviewer cannot be empty")
     private ReviewerDTO reviewer;
 
     private List<CommentDTO> comments;
@@ -24,7 +24,7 @@ public class ReviewDTO {
     public static ReviewDTO of(Review review){
         var dto = new ReviewDTO();
         dto.id = review.getId();
-        dto.filmId = review.getFilm().getId(); // verificar se em alguma condição gera nullpoint
+        dto.filmId = review.getFilm().getId();
         dto.grade = review.getGrade();
         dto.reviewer = ReviewerDTO.of(review.getReviewer());
         dto.comments = review.getComments().stream().map(CommentDTO::of).collect(Collectors.toList());

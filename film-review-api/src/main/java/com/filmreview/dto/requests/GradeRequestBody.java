@@ -4,10 +4,10 @@ import javax.validation.constraints.NotEmpty;
 
 public class GradeRequestBody {
 
-    @NotEmpty(message = "The grade cannot be empty")
+    @NotEmpty(message = "Grade cannot be empty")
     private String grade;
 
-    @NotEmpty(message = "The reviewer cannot be empty")
+    @NotEmpty(message = "Reviewer id cannot be empty")
     private String reviewerId;
 
     public String getGrade() {

@@ -4,6 +4,7 @@ package com.filmreview.domain;
 import com.filmreview.entity.AbstractEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,8 @@ public class Reviewer extends AbstractEntity{
 
     private Integer score = 0;
 
+    private LocalDateTime createdAt;
+
     @Enumerated(EnumType.STRING)
     private ProfileType profileType = ProfileType.READER;
 
@@ -29,6 +32,7 @@ public class Reviewer extends AbstractEntity{
         reviewer.username = username;
         reviewer.email = email;
         reviewer.password = password;
+        reviewer.createdAt = LocalDateTime.now();
 
         return reviewer;
     }
@@ -57,6 +61,25 @@ public class Reviewer extends AbstractEntity{
         return profileType;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void addExperience() {
+        score += 1;
+        verifyTypeProfile();
+    }
+
+    private void verifyTypeProfile() {
+        if (score > 1000) return;
+        profileType = profileType.level(score);
+    }
+
+    public void updateToModerator() {
+        profileType = ProfileType.MODERATOR;
+        score = 1001;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +92,7 @@ public class Reviewer extends AbstractEntity{
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, username, email, password, profileType);
+        return Objects.hash(name, username, email, password, profileType, createdAt);
     }
 
     @Override
@@ -80,20 +103,5 @@ public class Reviewer extends AbstractEntity{
                 ", email='" + email + '\'' +
                 ", profileType=" + profileType +
                 '}';
-    }
-
-    public void addExperience() {
-        score += 1;
-        verifyTypeProfile();
-    }
-
-    private void verifyTypeProfile() { // TODO: criar teste
-        if (score > 1000) return;
-        profileType = profileType.level(score);
-    }
-
-    public void updateToModerator() {
-        profileType = ProfileType.MODERATOR;
-        score = 1001;
     }
 }

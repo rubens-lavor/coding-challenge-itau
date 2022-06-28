@@ -1,7 +1,5 @@
 package com.filmreview.domain;
 
-import java.util.Objects;
-
 public enum ProfileType {
     READER(20, "BASIC"),
     BASIC(100, "ADVANCED"),
@@ -29,4 +27,7 @@ public enum ProfileType {
         return this.equals(ProfileType.ADVANCED) || this.equals(ProfileType.MODERATOR);
     }
 
+    public boolean isModerator() {
+        return this.equals(ProfileType.MODERATOR);
+    }
 }

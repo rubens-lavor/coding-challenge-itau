@@ -1,9 +1,9 @@
 package com.filmreview.dto;
 
 
+import com.filmreview.domain.ProfileType;
 import com.filmreview.domain.Reviewer;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 public class ReviewerDTO {
@@ -11,12 +11,14 @@ public class ReviewerDTO {
     private UUID id;
     private String name;
     private String username;
+    private ProfileType profile;
 
     public static ReviewerDTO of(Reviewer reviewer){
         var dto = new ReviewerDTO();
         dto.id = reviewer.getId();
         dto.name = reviewer.getName();
         dto.username = reviewer.getUsername();
+        dto.profile = reviewer.getProfileType();
 
         return dto;
     }
@@ -33,4 +35,7 @@ public class ReviewerDTO {
         return username;
     }
 
+    public ProfileType getProfile() {
+        return profile;
+    }
 }

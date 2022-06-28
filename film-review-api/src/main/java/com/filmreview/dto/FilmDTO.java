@@ -10,6 +10,7 @@ public class FilmDTO {
     private UUID id;
     private String imdbID;
     private String title;
+    private Double rating;
     private List<ReviewDTO> reviews;
 
     public static FilmDTO of(Film film){
@@ -17,6 +18,7 @@ public class FilmDTO {
         dto.id = film.getId();
         dto.imdbID = film.getImdbID();
         dto.title = film.getTitle();
+        dto.rating = film.getRating();
         dto.reviews = getReviews(film);
 
         return dto;
@@ -39,6 +41,10 @@ public class FilmDTO {
 
     public String getTitle() {
         return title;
+    }
+
+    public Double getRating() {
+        return rating;
     }
 
     public List<ReviewDTO> getReviews() {

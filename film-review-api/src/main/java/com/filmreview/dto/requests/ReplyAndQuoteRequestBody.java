@@ -7,7 +7,7 @@ public class ReplyAndQuoteRequestBody {
     @NotEmpty(message = "Description is required")
     private String description;
 
-    @NotEmpty(message = "The sender cannot be empty")
+    @NotEmpty(message = "Reviewer id cannot be empty")
     private String senderId;
 
     public String getDescription() {

@@ -22,8 +22,13 @@ public class FilmReviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FilmDTO>> filmList() { //TODO: deve estar logado, ou seja, conta criada.
+    public ResponseEntity<List<FilmDTO>> filmList() {
         return ResponseEntity.ok(filmReviewService.listAll());
+    }
+
+    @GetMapping(path = "/reviewers")
+    public ResponseEntity<List<ReviewerDTO>> reviewerList() {
+        return ResponseEntity.ok(filmReviewService.listAllReviewer());
     }
 
     @GetMapping(path = "/{imdbID}")
@@ -41,32 +46,41 @@ public class FilmReviewController {
         return new ResponseEntity<>(filmReviewService.sendGradeReview(imdbID, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{imdbID}/review/comment") // nível básico ou superior
+    @PostMapping("/{imdbID}/review/comment")
     public ResponseEntity<ReviewDTO> sendComment(@PathVariable String imdbID, @RequestBody @Valid CommentRequestBody body) {
         return new ResponseEntity<>(filmReviewService.sendCommentReview(imdbID, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/review/comment/{id}/reply") // nível básico ou superior
+    @PostMapping("/review/comment/{id}/reply")
     public ResponseEntity<CommentDTO> replyToComment(@PathVariable UUID id, @RequestBody @Valid ReplyAndQuoteRequestBody body) {
         return new ResponseEntity<>(filmReviewService.replyToComment(id, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/review/comment/{id}/quote") // nível avançado ou superior
+    @PostMapping("/review/comment/{id}/quote")
     public ResponseEntity<CommentDTO> quoteToComment(@PathVariable UUID id, @RequestBody @Valid ReplyAndQuoteRequestBody body) {
         return new ResponseEntity<>(filmReviewService.quoteToComment(id, body), HttpStatus.CREATED);
     }
 
-    @PostMapping("/review/comment/{id}/evaluation") // nível avançado ou superior
+    @PostMapping("/review/comment/{id}/evaluation")
     public ResponseEntity<CommentDTO> evaluationComment(@PathVariable UUID id, @RequestBody @Valid EvaluationCommentRequestBody body) {
         return new ResponseEntity<>(filmReviewService.evaluationComment(id, body), HttpStatus.CREATED);
     }
 
-//    @PostMapping("/{id}/review/response")
-//    public ResponseEntity<Review> sendComment(@RequestBody @Valid ReviewerDTO reviewerDTO) {
-//        return new ResponseEntity<>(filmReviewService.sendComment(reviewerDTO), HttpStatus.CREATED);
-//    }
+    @PutMapping("/moderator/{moderatorId}/promote/{reviewerId}")
+    public ResponseEntity<Void> promoteToModerator(@PathVariable UUID moderatorId, @PathVariable UUID reviewerId) {
+        filmReviewService.promoteToModerator(moderatorId, reviewerId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
-    //TODO: métodos para like e dislike
+    @PutMapping("/moderator/{moderatorId}/repeated-comment/{commentId}")
+    public ResponseEntity<Void> repeatedComment(@PathVariable UUID moderatorId, @PathVariable UUID commentId) {
+        filmReviewService.repeatedComment(moderatorId, commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
-    // no seu próprio comentário citar outros comentários.
+    @DeleteMapping("/moderator/{moderatorId}/comment/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable UUID moderatorId, @PathVariable UUID commentId) {
+        filmReviewService.deleteComment(moderatorId, commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

@@ -5,6 +5,7 @@ import com.filmreview.entity.AbstractEntity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Reviews")
@@ -64,5 +65,29 @@ public class Review extends AbstractEntity {
 
     public void setFilm(Film film) {
         this.film = film;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(reviewer, review.reviewer)
+                && Objects.equals(grade, review.grade)
+                && Objects.equals(film, review.film);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reviewer, comments, grade, film);
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewer=" + reviewer +
+                ", comments=" + comments +
+                ", grade=" + grade +
+                '}';
     }
 }

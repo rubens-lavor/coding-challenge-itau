@@ -12,4 +12,6 @@ public interface ReviewerRepository extends JpaRepository<Reviewer, UUID> {
     default Reviewer getOne(UUID id) {
         return findById(id).orElseThrow(() -> new BadRequestException("Reviewer not found by id"));
     }
+
+    Boolean existsByUsernameOrEmail(String username, String email);
 }

@@ -51,6 +51,10 @@ public class Comment extends AbstractCommentEntity {
         return quotes;
     }
 
+    public Review getReview() {
+        return review;
+    }
+
     public void setReview(Review review) {
         this.review = review;
     }
@@ -69,22 +73,24 @@ public class Comment extends AbstractCommentEntity {
         evaluations.add(evaluation);
     }
 
+    public void setRepeated() {
+        this.isRepeated = true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Comment comment = (Comment) o;
-        return Objects.equals(isRepeated, comment.isRepeated)
-                && Objects.equals(evaluations, comment.evaluations)
+        return Objects.equals(evaluations, comment.evaluations)
                 && Objects.equals(replies, comment.replies)
                 && Objects.equals(quotes, comment.quotes)
-                && Objects.equals(review, comment.review);
+                && Objects.equals(description, comment.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), isRepeated, evaluations, replies, quotes, review);
+        return Objects.hash(isRepeated, evaluations, replies, quotes, review);
     }
 
     @Override
@@ -95,6 +101,7 @@ public class Comment extends AbstractCommentEntity {
                 ", replies=" + replies +
                 ", quotes=" + quotes +
                 ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
