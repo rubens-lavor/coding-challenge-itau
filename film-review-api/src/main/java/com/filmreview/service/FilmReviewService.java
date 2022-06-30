@@ -11,8 +11,6 @@ import com.filmreview.exception.BadRequestException;
 import com.filmreview.repository.*;
 import com.filmreview.utils.Rule;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,22 +28,19 @@ public class FilmReviewService {
     private final CommentRepository commentRepository;
     private final EvaluationCommentRepository evaluationCommentRepository;
     private final RestTemplateBuilder restTemplateBuilder;
-    //private final PasswordEncoder passwordEncoder;
 
     public FilmReviewService(FilmRepository filmRepository,
                              ReviewerRepository reviewerRepository,
                              ReviewRepository reviewRepository,
                              CommentRepository commentRepository,
                              EvaluationCommentRepository evaluationCommentRepository,
-                             RestTemplateBuilder restTemplateBuilder
-                             /*, PasswordEncoder passwordEncoder*/) {
+                             RestTemplateBuilder restTemplateBuilder) {
         this.filmRepository = filmRepository;
         this.reviewerRepository = reviewerRepository;
         this.reviewRepository = reviewRepository;
         this.commentRepository = commentRepository;
         this.evaluationCommentRepository = evaluationCommentRepository;
         this.restTemplateBuilder = restTemplateBuilder;
-        //this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -79,17 +74,6 @@ public class FilmReviewService {
         }
         return objectResponse;
     }
-
-//    @Transactional
-//    public ReviewerDTO createReviewer(ReviewerRequestBody dto) {
-//        Rule.check(!reviewerRepository.existsByUsernameOrEmail(dto.getUsername(), dto.getEmail()),
-//                "The user already exists");
-//
-//        var passwordEncoder = new BCryptPasswordEncoder();
-//
-//        var reviewer = Reviewer.of(dto.getName(), dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
-//        return ReviewerDTO.of(reviewerRepository.save(reviewer));
-//    }
 
     @Transactional
     public ReviewDTO sendCommentReview(String imdbID, CommentRequestBody dto) {

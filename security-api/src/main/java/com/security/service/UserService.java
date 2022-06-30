@@ -13,13 +13,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private ReviewerRepository reviewerRepository;
-//
-//    public UserService() {
-//    }
-//
-//    public UserService(ReviewerRepository reviewerRepository) {
-//        this.reviewerRepository = reviewerRepository;
-//    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

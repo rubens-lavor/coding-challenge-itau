@@ -17,11 +17,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class JWTConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
-    // private final PasswordEncoder passwordEncoder;
 
-    public JWTConfiguration(UserDetailsService userDetailsService/*, PasswordEncoder passwordEncoder*/) {
+    public JWTConfiguration(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        // this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,9 +33,8 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager())) // para autenticar, no fim das contas esse deve ser o unico filtro nessa api
-                .addFilter(new JWTValidationFilter(authenticationManager())) // para validar.. acredito que deva passar apenas esse ultimo filtro na film api
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // para não guardar a sessão do usuário no servidor
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
