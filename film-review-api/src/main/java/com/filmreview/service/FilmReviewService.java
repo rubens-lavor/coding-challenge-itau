@@ -80,16 +80,16 @@ public class FilmReviewService {
         return objectResponse;
     }
 
-    @Transactional
-    public ReviewerDTO createReviewer(ReviewerRequestBody dto) {
-        Rule.check(!reviewerRepository.existsByUsernameOrEmail(dto.getUsername(), dto.getEmail()),
-                "The user already exists");
-
-        var passwordEncoder = new BCryptPasswordEncoder();
-
-        var reviewer = Reviewer.of(dto.getName(), dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
-        return ReviewerDTO.of(reviewerRepository.save(reviewer));
-    }
+//    @Transactional
+//    public ReviewerDTO createReviewer(ReviewerRequestBody dto) {
+//        Rule.check(!reviewerRepository.existsByUsernameOrEmail(dto.getUsername(), dto.getEmail()),
+//                "The user already exists");
+//
+//        var passwordEncoder = new BCryptPasswordEncoder();
+//
+//        var reviewer = Reviewer.of(dto.getName(), dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+//        return ReviewerDTO.of(reviewerRepository.save(reviewer));
+//    }
 
     @Transactional
     public ReviewDTO sendCommentReview(String imdbID, CommentRequestBody dto) {

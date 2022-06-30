@@ -20,3 +20,7 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+jwt:
+  secret: c97916ae-69ce-4f76-b4fd-10f2a3d9a701
+  expiration: 600000

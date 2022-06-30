@@ -23,7 +23,7 @@ public class UserController {
 //    }
 //
 //    public UserController() {
-//    }
+//    } TODO: deletar este controller
 
     @GetMapping("/listAll")
     public ResponseEntity<List<User>> listAll(){

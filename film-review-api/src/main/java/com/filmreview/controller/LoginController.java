@@ -24,4 +24,5 @@ public class LoginController {
     public ResponseEntity<String> authentication(@RequestBody LoginDTO body) {
         return loginService.authentication(body);
     }
+
 }

@@ -36,10 +36,10 @@ public class FilmReviewController {
         return ResponseEntity.ok(filmReviewService.findByImdbID(imdbID));
     }
 
-    @PostMapping("/create-account")
-    public ResponseEntity<ReviewerDTO> createReviewer(@RequestBody @Valid ReviewerRequestBody body) {
-        return new ResponseEntity<>(filmReviewService.createReviewer(body), HttpStatus.CREATED);
-    }
+//    @PostMapping("/create-account")
+//    public ResponseEntity<ReviewerDTO> createReviewer(@RequestBody @Valid ReviewerRequestBody body) {
+//        return new ResponseEntity<>(filmReviewService.createReviewer(body), HttpStatus.CREATED);
+//    }
 
     @PostMapping("/{imdbID}/review/grade")
     public ResponseEntity<ReviewDTO> sendGrade(@PathVariable String imdbID, @RequestBody @Valid GradeRequestBody body) {
