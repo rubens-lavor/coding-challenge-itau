@@ -1,58 +1,107 @@
 package com.security.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
-import java.util.Collection;
-import java.util.UUID;
+@Entity
+@Table(name = "Reviewers")
+public class Reviewer extends AbstractEntity {
 
-public class Reviewer implements UserDetails {
+    private String name;
 
-    private UUID id;
     private String username;
+
+    private String email;
+
     private String password;
 
-    public static Reviewer of(UUID id, String username, String password){
+    private Integer score = 0;
+
+    private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private ProfileType profileType = ProfileType.READER;
+
+    public static Reviewer of(String name, String username, String email, String password){
         var reviewer = new Reviewer();
+        reviewer.name = name;
+        reviewer.username = username;
+        reviewer.email = email;
+        reviewer.password = password;
+        reviewer.createdAt = LocalDateTime.now();
+
         return reviewer;
     }
 
-    public UUID getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
     public String getUsername() {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public ProfileType getProfileType() {
+        return profileType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void addExperience() {
+        score += 1;
+        verifyTypeProfile();
+    }
+
+    private void verifyTypeProfile() {
+        if (score > 1000) return;
+        profileType = profileType.level(score);
+    }
+
+    public void updateToModerator() {
+        profileType = ProfileType.MODERATOR;
+        score = 1001;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reviewer reviewer = (Reviewer) o;
+        return Objects.equals(name, reviewer.name)
+                && Objects.equals(username, reviewer.username)
+                && Objects.equals(email, reviewer.email);
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public int hashCode() {
+        return Objects.hash(name, username, email, password, profileType, createdAt);
     }
 
     @Override
-    public boolean isEnabled() {
-        return true;
+    public String toString() {
+        return "Reviewer{" +
+                "name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", profileType=" + profileType +
+                '}';
     }
 }

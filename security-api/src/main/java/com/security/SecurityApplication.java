@@ -7,8 +7,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories("com.security.repository.UserRepository")
-@EntityScan("com.security.domain")
+@EnableJpaRepositories("com.security.repository*")
+@ComponentScan(basePackages = {"com.security.*"})
+@EntityScan("com.security.*")
 @SpringBootApplication
 public class SecurityApplication {
     public static void main(String[] args) {
