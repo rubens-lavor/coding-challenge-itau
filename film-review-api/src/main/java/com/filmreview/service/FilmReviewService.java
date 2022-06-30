@@ -34,8 +34,7 @@ public class FilmReviewService {
                              ReviewRepository reviewRepository,
                              CommentRepository commentRepository,
                              EvaluationCommentRepository evaluationCommentRepository,
-                             RestTemplateBuilder restTemplateBuilder
-    ) {
+                             RestTemplateBuilder restTemplateBuilder) {
         this.filmRepository = filmRepository;
         this.reviewerRepository = reviewerRepository;
         this.reviewRepository = reviewRepository;
@@ -74,14 +73,6 @@ public class FilmReviewService {
             throw new BadRequestException(objectResponse.Error);
         }
         return objectResponse;
-    }
-
-    @Transactional
-    public ReviewerDTO createReviewer(ReviewerRequestBody dto) {
-        Rule.check(!reviewerRepository.existsByUsernameOrEmail(dto.getUsername(), dto.getEmail()),
-                "The user already exists");
-        var reviewer = Reviewer.of(dto.getName(), dto.getUsername(), dto.getEmail(), dto.getPassword());
-        return ReviewerDTO.of(reviewerRepository.save(reviewer));
     }
 
     @Transactional
