@@ -62,7 +62,7 @@ A film-review-api vai rodar na porta 8080 e a security-api na 8081.
 
 `/login-account`
 
-## Crei um usuário
+## Crie um usuário
 
 Agora você pode criar um usuário via Postman (Insomnia ou outro de sua preferẽncia) e testar as funcionalidades da aplicação.
 
