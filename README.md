@@ -54,7 +54,7 @@ Em seguida vá até a security-api, segue caminho: security-api > src > java > c
 arquivo SecurityApplication, basta rodar essa classe também.
 A film-review-api vai rodar na porta 8080 e a security-api na 8081.
 
-## Crei um usuário
+## Crie um usuário
 
 Agora você pode criar um usuário e testar as funcionalidades da aplicação.
 Acesse a rota localhost:8080/create-account passando o body:
@@ -80,6 +80,7 @@ Com o token é possível  acessar as demais rotas da aplicação,
 passando o mesmo no cabeçalho das requisições.
 
 Abaixo segue um vídeo demonstrando
+
 https://youtu.be/GYwTBmdqa6A
 
 ## As classes
