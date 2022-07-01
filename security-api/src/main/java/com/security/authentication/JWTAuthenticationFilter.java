@@ -21,10 +21,7 @@ import java.util.Date;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-//    @Value("${jwt.secret}")
-//    private String secret;
-
-    public static final String SECRET = "c97916ae-69ce-4f76-b4fd-10f2a3d9a701"; // TODO: tirar daqui
+    public static final String SECRET = "c97916ae-69ce-4f76-b4fd-10f2a3d9a701";
 
     public static final int TOKEN_EXPIRATION = 600000;
 
