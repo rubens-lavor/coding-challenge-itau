@@ -11,7 +11,8 @@ e gerar um token JWT.
 A responsablidade de validar o token fica para a api que consome nossa api de segurança, no caso a film-review-api.
 
 ---
-## Meu abiente de desenvolvimento para este projeto:
+## Meu ambiente de desenvolvimento para este projeto:
+
 
 - Ubuntu 20.04 LTS
 - Java 11
@@ -56,15 +57,21 @@ arquivo `SecurityApplication`, basta rodar essa classe também.
 
 A film-review-api vai rodar na porta 8080 e a security-api na 8081.
 
+
+**OBS**: É importante que sua IDE enxergue film-review-api e security-api como **módulos**, como de fato são. 
+Caso contrário as classes executáveis `Application` e `SecurityApplication` podem não se comportar como tal e o projeto não rodar. 
+
+Estou deixando um vídeo mostrando como rodar e possíveis contornos para esse problema,caso sua IDE seja Intellij IDEA Community isso não deve ser um problema.
+
 ---
-## Rotas publicas da aplicação:
+## Rotas públicas da aplicação:
 `/create-account`
 
 `/login-account`
 
 ## Crie um usuário
 
-Agora você pode criar um usuário via Postman (Insomnia ou outro de sua preferẽncia) e testar as funcionalidades da aplicação.
+Agora você pode criar um usuário via Postman (Insomnia ou outro de sua preferência) e testar as funcionalidades da aplicação.
 
 Acesse a rota http://localhost:8080/create-account passando o body no formato Json, conforme exemplo abaixo:
 ```json
@@ -103,7 +110,7 @@ Como resposta dessa requisição você recebe um token, que te dará acesso as r
 Ao acessar a rota `http://localhost:8080/login-account`, passando username e senha
 no corpo da requisição, a film-review-api manda uma requisição para a security-api, 
 `http://localhost:8081/login`, que valida as credenciais(username e senha) e gera um token 
-a partir delas, esse token é recebido pela film-review-api e tornado ao usuário.
+a partir delas, esse token é recebido pela film-review-api e retornado ao usuário.
 
 Com o token é possível  acessar as demais rotas da aplicação, 
 passando o mesmo no cabeçalho das requisições.
@@ -119,7 +126,7 @@ https://youtu.be/GYwTBmdqa6A
 
 ## Explicando o projeto
 
-A seguir vou apresentar as entidades e a ideia por tras delas, mostrando os atributos e omitindo os métodos.
+A seguir vou apresentar as entidades e a ideia por trás delas, mostrando os atributos e omitindo os métodos.
 
 
 ## As classes
@@ -128,7 +135,7 @@ A seguir vou apresentar as entidades e a ideia por tras delas, mostrando os atri
 `Film`, a classe é composta por um title, imdbID que é o id externo da api que estamos consumindo para buscar os filmes,
 rating que é a média das notas de cada review, e uma lista de review, que são as críticas/avaliações feitas pelos usuários para o filme em questão.
 
-Apesar de buscarmos o filme numa api externa, após a busca e avaliação do mesmo, ele é salva na nossa base de dados pegando o nome e imdbID.
+Apesar de buscarmos o filme numa api externa, após a busca e avaliação do mesmo, ele é salvo na nossa base de dados pegando o nome e imdbID.
 
 ``` java
 @Entity
@@ -183,7 +190,7 @@ public class Review extends AbstractEntity {
 <br>
 
 `Comments` são os nossos comentários, ela tem uma flag que diz se o comentário é repetido ou não, uma lista de 
-`EvaluationComment` representando os like e dislikes desse comentário, `ReplyComment` as respostas do comentário e `QuoteComment` as citações. Uma referência para `review`
+`EvaluationComment` representando os likes e dislikes desse comentário, `ReplyComment` as respostas do comentário e `QuoteComment` as citações. Uma referência para `review`
 
 ``` java
 @Entity
@@ -209,8 +216,7 @@ public class Comment extends AbstractCommentEntity {
 
 <br>
 
-`EvaluationComment` é a classe responsável por receber o like/dislike do comentário, a ideia de trazer isso pra uma tabela separa e não simplesmente um inteiro na
-tabela Comments, é de não permitir que o mesmo reviewer dê likes e dislikes indefinidamente no mesmo cometário, como essa classe contém referência para reviewer, que to chamando de sender, e comment, é possível saber se a pessoa já deixou uma avaliação para o comentário e não permitir a operação repetida.
+`EvaluationComment` é a classe responsável por receber o like/dislike do comentário, a ideia de trazer isso pra uma tabela separada e não simplesmente um inteiro na tabela Comments, é de não permitir que o mesmo reviewer dê likes e dislikes indefinidamente no mesmo cometário, como essa classe contém referência para reviewer, que to chamando de sender, e comment, é possível saber se a pessoa já deixou uma avaliação para o comentário e não permitir a operação repetida.
 
 ``` java
 @Entity
@@ -295,7 +301,7 @@ public class Reviewer extends AbstractEntity{
 }
 
 ```
-<br>
+
 <br>
 
 ## Listando todos os filmes salvos na minha base local de dados, após alguns testes dos endpoint:
