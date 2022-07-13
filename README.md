@@ -1,6 +1,4 @@
-# coding-challenge-itau
-Repositório dedicado ao desafio itaú devs
-
+# film review
 ---
 No projeto, foram criadas 2 API, a primeira, **film-review-api**, é uma aplicação que tem
 como finalidade reunir opniões sobre determinado filme, armazenando notas, comentários e que permite interação entre 
